@@ -70,13 +70,16 @@ module.exports = function (app, config, passport) {
 
     // adds CSRF support
     if (process.env.NODE_ENV !== 'test') {
-      app.use(express.csrf())
+      //disable csrf support to allow posting from rest client (ajax)
+      //app.use(express.csrf())
 
       // This could be moved to view-helpers :-)
-      app.use(function(req, res, next){
-        res.locals.csrf_token = req.csrfToken()
-        next()
-      })
+      //app.use(function(req, res, next){
+      //  console.log('check the csrf...', req.url);
+      //  res.locals.csrf_token = req.csrfToken()
+        //res.cookie('XSRF-TOKEN', res.locals.csrf_token);
+      //  next()
+      //})
     }
 
     // routes should be at the last

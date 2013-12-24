@@ -40,6 +40,11 @@ module.exports = function (app, passport) {
     }), users.session)
   */
 
+  app.post('/users/test1', function(req, res) {
+    console.log('posting...');
+    return res.status(200).json( { 'msg':'testing...'} );
+  });
+
   app.post('/users/session', function(req, res, next) {
     console.log('post to session...');
     passport.authenticate('local', function(err, user, info) {
@@ -147,8 +152,11 @@ module.exports = function (app, passport) {
       res.json(users);
     });
 
+  });
 
-
+  app.get('/auth/tokens', function(req, res) {
+    console.log('csrf token: ', req.cookies['XSRF-TOKEN']);
+    return res.status(200).json( { 'tokens':req.cookies['XSRF-TOKEN']} );
   });
 
 }
