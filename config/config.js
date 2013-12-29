@@ -80,5 +80,17 @@ module.exports = {
       callbackURL: "http://localhost:3000/auth/linkedin/callback"
     }
   },
-  production: {}
+  production: {
+    db: 'mongodb://jfrost:bucky2420@dbh46.mongolab.com:27467/gbmax_test',
+    root: rootPath,
+    notifier: notifier,
+    app: {
+      name: 'gbmax API'
+    },
+    facebook: {
+      clientID: "495298783917406",
+      clientSecret: "ebffe009a6f29503efde0aa966a8a056",
+      callbackURL: "http://sheltered-garden-5569.herokuapp.com/auth/facebook/callback"
+    }
+  }
 }
