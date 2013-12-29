@@ -20,7 +20,7 @@
     "npm":  "1.2.x"
   },
   "scripts": {
-    "start": "NODE_ENV=production DEBUG=express:* ./node_modules/.bin/nodemon server.js",
+    "start": "NODE_ENV=development DEBUG=express:* ./node_modules/.bin/nodemon server.js",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/test-*.js"
   },
   "dependencies": {
