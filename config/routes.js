@@ -25,25 +25,11 @@ var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
 
 module.exports = function (app, passport) {
 
-  // user routes
-  app.get('/invalidlogin', users.invalidlogin)
-  app.get('/login', users.login)
-  app.get('/signup', users.signup)
-  app.get('/logout', users.logout)
-  app.post('/users', users.create)
+  // home route
+  app.get('/', articles.index)
 
-  /*
-  app.post('/users/session',
-    passport.authenticate('local', {
-      failureRedirect: '/invalidlogin',
-      failureFlash: 'Invalid email or password.'
-    }), users.session)
-  */
-
-  app.post('/users/test1', function(req, res) {
-    console.log('posting...');
-    return res.status(200).json( { 'msg':'testing...'} );
-  });
+  //auth 
+  //*********
 
   app.post('/users/session', function(req, res, next) {
     console.log('post to session...');
@@ -65,7 +51,21 @@ module.exports = function (app, passport) {
     })(req, res, next);
   });
 
-  app.get('/users/:userId', users.show)
+  app.get('/auth/tokens', function(req, res) {
+    console.log('csrf token: ', req.cookies['XSRF-TOKEN']);
+    return res.status(200).json( { 'tokens':req.cookies['XSRF-TOKEN']} );
+  });
+
+  //not used..
+  app.get('/invalidlogin', users.invalidlogin)
+
+  //TODO:  convert to REST style
+  app.get('/login', users.login)
+  app.get('/signup', users.signup)
+  app.get('/logout', users.logout)
+
+
+  //FB
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
       scope: [ 'email', 'user_about_me'],
@@ -75,14 +75,8 @@ module.exports = function (app, passport) {
     passport.authenticate('facebook', {
       failureRedirect: '/login'
     }), users.authCallback)
-  app.get('/auth/github',
-    passport.authenticate('github', {
-      failureRedirect: '/login'
-    }), users.signin)
-  app.get('/auth/github/callback',
-    passport.authenticate('github', {
-      failureRedirect: '/login'
-    }), users.authCallback)
+
+  //twitter
   app.get('/auth/twitter',
     passport.authenticate('twitter', {
       failureRedirect: '/login'
@@ -91,6 +85,18 @@ module.exports = function (app, passport) {
     passport.authenticate('twitter', {
       failureRedirect: '/login'
     }), users.authCallback)
+
+  //github
+  app.get('/auth/github',
+    passport.authenticate('github', {
+      failureRedirect: '/login'
+    }), users.signin)
+  app.get('/auth/github/callback',
+    passport.authenticate('github', {
+      failureRedirect: '/login'
+    }), users.authCallback)
+
+  //google
   app.get('/auth/google',
     passport.authenticate('google', {
       failureRedirect: '/login',
@@ -103,6 +109,8 @@ module.exports = function (app, passport) {
     passport.authenticate('google', {
       failureRedirect: '/login'
     }), users.authCallback)
+
+  //linkedin
   app.get('/auth/linkedin',
     passport.authenticate('linkedin', {
       failureRedirect: '/login',
@@ -115,8 +123,23 @@ module.exports = function (app, passport) {
       failureRedirect: '/login'
     }), users.authCallback)
 
+
+  // user routes
+  //**************
+
+  app.post('/users', users.create)
+  app.get('/users/:userId', users.show)
+
   app.param('userId', users.user)
 
+  app.post('/users/test1', function(req, res) {
+    console.log('posting...');
+    return res.status(200).json( { 'msg':'testing...'} );
+  });
+
+
+
+  
   // article routes
   app.get('/articles', articles.index)
   app.get('/articles/new', auth.requiresLogin, articles.new)
@@ -128,8 +151,6 @@ module.exports = function (app, passport) {
 
   app.param('id', articles.load)
 
-  // home route
-  app.get('/', articles.index)
 
   // comment routes
   var comments = require('../app/controllers/comments')
@@ -139,6 +160,7 @@ module.exports = function (app, passport) {
   // tag routes
   var tags = require('../app/controllers/tags')
   app.get('/tags/:tag', tags.index)
+
 
   //API
   var User = mongoose.model('User');
@@ -154,9 +176,6 @@ module.exports = function (app, passport) {
 
   });
 
-  app.get('/auth/tokens', function(req, res) {
-    console.log('csrf token: ', req.cookies['XSRF-TOKEN']);
-    return res.status(200).json( { 'tokens':req.cookies['XSRF-TOKEN']} );
-  });
+
 
 }
