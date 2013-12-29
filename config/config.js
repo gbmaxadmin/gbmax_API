@@ -91,6 +91,26 @@ module.exports = {
       clientID: "495298783917406",
       clientSecret: "ebffe009a6f29503efde0aa966a8a056",
       callbackURL: "http://sheltered-garden-5569.herokuapp.com/auth/facebook/callback"
+    },
+    twitter: {
+      clientID: "CONSUMER_KEY",
+      clientSecret: "CONSUMER_SECRET",
+      callbackURL: "http://localhost:3000/auth/twitter/callback"
+    },
+    github: {
+      clientID: 'APP_ID',
+      clientSecret: 'APP_SECRET',
+      callbackURL: 'http://localhost:3000/auth/github/callback'
+    },
+    google: {
+      clientID: "APP_ID",
+      clientSecret: "APP_SECRET",
+      callbackURL: "http://localhost:3000/auth/google/callback"
+    },
+    linkedin: {
+      clientID: "CONSUMER_KEY",
+      clientSecret: "CONSUMER_SECRET",
+      callbackURL: "http://localhost:3000/auth/linkedin/callback"
     }
   }
 }
