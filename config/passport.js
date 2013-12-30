@@ -28,13 +28,15 @@ module.exports = function (passport, config) {
       passwordField: 'password'
     },
     function(email, password, done) {
-      console.log('the email...', email);
+      console.log('the emailx...', email);
       User.findOne({ email: email }, function (err, user) {
         if (err) { return done(err) }
         if (!user) {
+          console.log('Unknown user...');
           return done(null, false, { message: 'Unknown user' })
         }
         if (!user.authenticate(password)) {
+          console.log('invalid password...');
           return done(null, false, { message: 'Invalid password' })
         }
         return done(null, user)

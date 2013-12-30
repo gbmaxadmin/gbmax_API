@@ -35,6 +35,7 @@ module.exports = function (app, passport) {
     console.log('post to session...');
     passport.authenticate('local', function(err, user, info) {
       console.log('passport authenticate...', user);
+      console.log('info...', info);
       if (err) { 
         return next(err); 
       }
@@ -48,6 +49,7 @@ module.exports = function (app, passport) {
         //return res.redirect('/api/users');
         return res.status(200).json(user);
       });
+      //return res.status(200).json(user);
     })(req, res, next);
   });
 
