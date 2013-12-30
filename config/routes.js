@@ -25,6 +25,16 @@ var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
 
 module.exports = function (app, passport) {
 
+  // CORS
+  // ------
+  app.all('/*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS,COPY');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Five9-Copy-Resource');
+    res.header('cookie', JSON.stringify(req.cookies));
+    next();
+  });
+
   // home route
   app.get('/', articles.index)
 
@@ -171,6 +181,7 @@ module.exports = function (app, passport) {
     //res.send({myusers: User.find()});
     //res.status(200).send(JSON.stringify({myusers: User.find()}));
     console.log('the session...',req.session);
+    console.log('sessionID...', req.sessionID);
 
     User.find({}, function(err, users) {
       res.json(users);
