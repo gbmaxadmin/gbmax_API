@@ -41,7 +41,8 @@
     "underscore": "latest",
     "async": "latest",
     "view-helpers": "latest",
-    "forever": "latest"
+    "forever": "latest",
+    "cookie-signature": "latest"
   },
   "devDependencies": {
     "supertest": "latest",

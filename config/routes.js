@@ -12,6 +12,7 @@ var users = require('../app/controllers/users')
   , articles = require('../app/controllers/articles')
   , auth = require('./middlewares/authorization')
   , mongoose = require('mongoose')
+  , cookie = require('cookie-signature')
 
 /**
  * Route middlewares
@@ -25,13 +26,27 @@ var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
 
 module.exports = function (app, passport) {
 
+
+
   // CORS
   // ------
   app.all('/*', function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
+    console.log('the sessionID...', req.sessionID);
+    
+    console.log('the header origin...', req.headers.origin);
+
+    //NOTE:  can't use wildcard for Origing if using Credentials=true
+    //see NOTE in web_framework frontenbd - main.js
+
+    //NOTE:  reading the header.origing from the req and setting it seems to work???
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS,COPY');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Five9-Copy-Resource');
+    res.header('Access-Control-Allow-Credentials', true);
     res.header('cookie', JSON.stringify(req.cookies));
+    //console.log('signed cookie...', 'connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool'));
+    //res.send('connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool'))
+    //res.header('cookie', JSON.stringify('connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool')));
     next();
   });
 
@@ -63,9 +78,13 @@ module.exports = function (app, passport) {
     })(req, res, next);
   });
 
-  app.get('/auth/tokens', function(req, res) {
+  app.get('/1/auth/tokens', function(req, res) {
     console.log('csrf token: ', req.cookies['XSRF-TOKEN']);
     return res.status(200).json( { 'tokens':req.cookies['XSRF-TOKEN']} );
+  });
+  app.get('/1/auth/test', function(req, res) {
+    console.log('sessionID...', req.sessionID);
+    return res.status(200).json( { 'auth_test':'ok' } );
   });
 
   //not used..
