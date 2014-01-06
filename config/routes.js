@@ -44,6 +44,7 @@ module.exports = function (app, passport) {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Five9-Copy-Resource');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('cookie', JSON.stringify(req.cookies));
+
     //console.log('signed cookie...', 'connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool'));
     //res.send('connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool'))
     //res.header('cookie', JSON.stringify('connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool')));
@@ -58,31 +59,37 @@ module.exports = function (app, passport) {
 
   app.post('/users/session', function(req, res, next) {
     console.log('post to session...');
-    passport.authenticate('local', function(err, user, info) {
-      console.log('passport authenticate...', user);
-      console.log('info...', info);
-      if (err) { 
-        return next(err); 
-      }
-      if (!user) { 
-        //return res.redirect('/login'); 
-        return res.status(401).json({ 'message': 'invalid login' });
-        
-      }
-      req.logIn(user, function(err) {
-        if (err) { return next(err); }
-        //return res.redirect('/api/users');
-        return res.status(200).json(user);
-      });
-      //return res.status(200).json(user);
-    })(req, res, next);
+
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    } else {
+      passport.authenticate('local', function(err, user, info) {
+        console.log('passport authenticate...', user);
+        console.log('info...', info);
+        if (err) { 
+          return next(err); 
+        }
+        if (!user) { 
+          //return res.redirect('/login'); 
+          return res.status(401).json({ 'message': 'invalid login' });
+          
+        }
+        req.logIn(user, function(err) {
+          if (err) { return next(err); }
+          //return res.redirect('/api/users');
+          return res.status(200).json(user);
+        });
+        //return res.status(200).json(user);
+      })(req, res, next);
+    }
+
   });
 
   app.get('/1/auth/tokens', function(req, res) {
     console.log('csrf token: ', req.cookies['XSRF-TOKEN']);
     return res.status(200).json( { 'tokens':req.cookies['XSRF-TOKEN']} );
   });
-  app.get('/1/auth/test', function(req, res) {
+  app.get('/1/auth/test', auth.requiresLogin, function(req, res) {
     console.log('sessionID...', req.sessionID);
     return res.status(200).json( { 'auth_test':'ok' } );
   });
