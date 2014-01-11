@@ -68,10 +68,10 @@ module.exports = function (app, passport) {
 
   });
 
-  app.get('/1/users/session', auth.requiresLogin, sessions.getSessionInfo);
-  app.get('/1/users/session/logout', sessions.logOutSession);
+  app.get('/users/session', auth.requiresLogin, sessions.getSessionInfo);
+  app.get('/users/session/logout', sessions.logOutSession);
 
-  app.get('/1/auth/test2', users.test2);
+  app.get('/auth/test2', users.test2);
 
 
 
