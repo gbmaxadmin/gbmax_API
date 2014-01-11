@@ -10,9 +10,11 @@ var async = require('async')
 
 var users = require('../app/controllers/users')
   , articles = require('../app/controllers/articles')
+  , sessions = require('../app/controllers/sessions')
   , auth = require('./middlewares/authorization')
   , mongoose = require('mongoose')
   , cookie = require('cookie-signature')
+  , _ = require('underscore')
 
 /**
  * Route middlewares
@@ -26,28 +28,17 @@ var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
 
 module.exports = function (app, passport) {
 
-
-
   // CORS
   // ------
   app.all('/*', function(req, res, next) {
-    console.log('the sessionID...', req.sessionID);
-    
-    console.log('the header origin...', req.headers.origin);
-
     //NOTE:  can't use wildcard for Origing if using Credentials=true
     //see NOTE in web_framework frontenbd - main.js
-
     //NOTE:  reading the header.origing from the req and setting it seems to work???
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS,COPY');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Five9-Copy-Resource');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('cookie', JSON.stringify(req.cookies));
-
-    //console.log('signed cookie...', 'connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool'));
-    //res.send('connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool'))
-    //res.header('cookie', JSON.stringify('connect.sid=s%3A'+cookie.sign(req.sessionID, 'tobiiscool')));
     next();
   });
 
@@ -58,44 +49,31 @@ module.exports = function (app, passport) {
   //*********
 
   app.post('/users/session', function(req, res, next) {
-    console.log('post to session...');
 
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    } else {
-      passport.authenticate('local', function(err, user, info) {
-        console.log('passport authenticate...', user);
-        console.log('info...', info);
-        if (err) { 
-          return next(err); 
-        }
-        if (!user) { 
-          //return res.redirect('/login'); 
-          return res.status(401).json({ 'message': 'invalid login' });
-          
-        }
-        req.logIn(user, function(err) {
-          if (err) { return next(err); }
-          //return res.redirect('/api/users');
-          return res.status(200).json(user);
-        });
-        //return res.status(200).json(user);
-      })(req, res, next);
-    }
+    passport.authenticate('local', function(err, user, info) {
+      if (err) { 
+        return next(err); 
+      }
+      if (!user) { 
+        //console.log('login info..', info);
+        return res.status(401).json(info);
+      }
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+
+        //go to go...
+        return res.status(200).json(user);
+      });
+    })(req, res, next);
 
   });
 
-  app.get('/1/auth/tokens', function(req, res) {
-    console.log('csrf token: ', req.cookies['XSRF-TOKEN']);
-    return res.status(200).json( { 'tokens':req.cookies['XSRF-TOKEN']} );
-  });
-  app.get('/1/auth/test', auth.requiresLogin, function(req, res) {
-    console.log('sessionID...', req.sessionID);
-    return res.status(200).json( { 'auth_test':'ok' } );
-  });
+  app.get('/1/users/session', auth.requiresLogin, sessions.getSessionInfo);
+  app.get('/1/users/session/logout', sessions.logOutSession);
 
-  //not used..
-  app.get('/invalidlogin', users.invalidlogin)
+  app.get('/1/auth/test2', users.test2);
+
+
 
   //TODO:  convert to REST style
   app.get('/login', users.login)
@@ -203,9 +181,6 @@ module.exports = function (app, passport) {
   //API
   var User = mongoose.model('User');
   app.get('/api/users', auth.requiresLogin, function(req, res){
-    //res.send('10 users online');
-    //res.send({myusers: User.find()});
-    //res.status(200).send(JSON.stringify({myusers: User.find()}));
     console.log('the session...',req.session);
     console.log('sessionID...', req.sessionID);
 

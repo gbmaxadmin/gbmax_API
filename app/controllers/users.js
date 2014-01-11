@@ -110,6 +110,18 @@ exports.show = function (req, res) {
 }
 
 /**
+ *  test2
+ */
+
+exports.test2 = function (req, res) {
+  console.log('test2 sessionID...',req.sessionID);
+  User.findOne({ 'username': 'jfrost2420' }, 'name username', function (err, user) {
+    if (err) return handleError(err);
+    return res.status(200).json(user);
+  });
+}
+
+/**
  * Find user by id
  */
 

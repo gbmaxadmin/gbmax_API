@@ -42,7 +42,8 @@
     "async": "latest",
     "view-helpers": "latest",
     "forever": "latest",
-    "cookie-signature": "latest"
+    "cookie-signature": "latest",
+    "underscore": "latest"
   },
   "devDependencies": {
     "supertest": "latest",

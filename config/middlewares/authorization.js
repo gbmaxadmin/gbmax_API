@@ -4,12 +4,9 @@
  */
 
 exports.requiresLogin = function (req, res, next) {
-  //console.log('req',req);
-  console.log('sessionID...', req.sessionID);
   if (!req.isAuthenticated()) {
     console.log('not authenticated...');
     req.session.returnTo = req.originalUrl
-    //return res.redirect('/login')
     return res.status(401).json({ 'message': 'not authenticated' });
   }
   next()

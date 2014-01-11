@@ -50,7 +50,7 @@ module.exports = function (app, config, passport) {
     // express/mongo session storage
     app.use(express.session({
       secret: 'noobjs',
-      cookie: { maxAge: 24 * 60 * 60 * 1000 },
+      cookie: { maxAge: 3600000 },
       store: new mongoStore({
         url: config.db,
         collection : 'sessions',
