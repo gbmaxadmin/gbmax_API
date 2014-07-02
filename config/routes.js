@@ -26,11 +26,15 @@ var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
  * Expose routes
  */
 
-module.exports = function (app, passport) {
+module.exports = function (app) {
+  
+  //var router = express.Router(); 
 
   // CORS
   // ------
+  
   app.all('/*', function(req, res, next) {
+      console.log('all route')
     //NOTE:  can't use wildcard for Origing if using Credentials=true
     //see NOTE in web_framework frontenbd - main.js
     //NOTE:  reading the header.origing from the req and setting it seems to work???
@@ -41,12 +45,21 @@ module.exports = function (app, passport) {
     res.header('cookie', JSON.stringify(req.cookies));
     next();
   });
+  
 
   // home route
-  app.get('/', articles.index)
+  //app.get('/', articles.index)
+  
+  app.get('/', function(req, res) {
+      console.log('index route')
+	  res.json({ message: 'hooray! welcome to our api!' });
+	});
 
   //auth 
   //*********
+  //
+  //
+ /*
 
   app.post('/users/session', function(req, res, next) {
 
@@ -189,7 +202,9 @@ module.exports = function (app, passport) {
     });
 
   });
+    
+  //app.use('/', router);
 
-
+*/
 
 }

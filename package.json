@@ -11,13 +11,13 @@
   "version": "3.0.0",
   "private": false,
   "author": "Madhusudhan Srinivasa <madhums8@gmail.com> (http://madhums.github.com)",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/madhums/node-express-mongoose-demo.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madhums/node-express-mongoose-demo.git"
   },
   "engines": {
     "node": "0.10.x",
-    "npm":  "1.2.x"
+    "npm": "1.2.x"
   },
   "scripts": {
     "start": "NODE_ENV=development DEBUG=express:* ./node_modules/.bin/nodemon server.js",
@@ -43,7 +43,12 @@
     "view-helpers": "latest",
     "forever": "latest",
     "cookie-signature": "latest",
-    "underscore": "latest"
+    "cookie-parser": "~1.3.2",
+    "express-session": "~1.5.2",
+    "compression": "~1.0.8",
+    "body-parser": "~1.4.3",
+    "morgan": "~1.1.1",
+    "method-override": "~2.0.2"
   },
   "devDependencies": {
     "supertest": "latest",
