@@ -15,20 +15,20 @@ var express = require('express')
   , morgan  = require('morgan')
   , methodOverride = require('method-override')
 
-module.exports = function (app, config) {
+module.exports = function (app, config, passport) {
 
-  //app.set('showStackError', true)
+  app.set('showStackError', true)
 
   // should be placed before express.static
-  //app.use(compression({
-  //  filter: function (req, res) {
-  //    return /json|text|javascript|css/.test(res.getHeader('Content-Type'))
- //   },
- //   level: 9
- // }))
+  app.use(compression({
+    filter: function (req, res) {
+      return /json|text|javascript|css/.test(res.getHeader('Content-Type'))
+    },
+    level: 9
+  }))
 
   //app.use(express.favicon())
-  //app.use(express.static(config.root + '/public'))
+  app.use(express.static(config.root + '/public'))
 
   // don't use logger for test env
   if (process.env.NODE_ENV !== 'test') {
@@ -36,15 +36,15 @@ module.exports = function (app, config) {
   }
 
   // set views path, template engine and default layout
-  //app.set('views', config.root + '/app/views')
-  //app.set('view engine', 'jade')
+  app.set('views', config.root + '/app/views')
+  app.set('view engine', 'jade')
 
   
     // expose package.json to views
-    //app.use(function (req, res, next) {
-    //  res.locals.pkg = pkg
-    //  next()
-    //})
+    app.use(function (req, res, next) {
+      res.locals.pkg = pkg
+      next()
+    })
 
     // cookieParser should be above session
     //app.use(cookieParser)
@@ -74,8 +74,8 @@ module.exports = function (app, config) {
     
 
     // use passport session
-    //app.use(passport.initialize())
-    //app.use(passport.session())
+    app.use(passport.initialize())
+    app.use(passport.session())
 
     // connect flash for flash messages - should be declared after sessions
     //app.use(flash())

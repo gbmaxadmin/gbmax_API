@@ -40,7 +40,7 @@ fs.readdirSync(models_path).forEach(function (file) {
 
 var app = express()
 // express settings
-require('./config/express')(app, config)
+require('./config/express')(app, config, passport)
 
 // Bootstrap routes
 require('./config/routes')(app)
