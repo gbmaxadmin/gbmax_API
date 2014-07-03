@@ -48,12 +48,12 @@ module.exports = function (app) {
   
 
   // home route
-  //app.get('/', articles.index)
+  app.get('/', articles.index)
   
-  app.get('/', function(req, res) {
-      console.log('index route')
-	  res.json({ message: 'hooray! welcome to our api!' });
-	});
+  //app.get('/', function(req, res) {
+  //    console.log('index route')
+  //	  res.json({ message: 'hooray! welcome to our api!' });
+  //	});
 
   //auth 
   //*********

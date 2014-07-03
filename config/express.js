@@ -81,7 +81,7 @@ module.exports = function (app, config, passport) {
     //app.use(flash())
 
     // should be declared after session and flash
-    //app.use(helpers(pkg.name))
+    app.use(helpers(pkg.name))
 
     // adds CSRF support
     //if (process.env.NODE_ENV !== 'test') {
