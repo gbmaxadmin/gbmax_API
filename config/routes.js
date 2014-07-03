@@ -59,8 +59,8 @@ module.exports = function (app) {
   //*********
   //
   //
- /*
-
+ 
+/*
   app.post('/users/session', function(req, res, next) {
 
     passport.authenticate('local', function(err, user, info) {
@@ -85,7 +85,7 @@ module.exports = function (app) {
   app.get('/users/session/logout', sessions.logOutSession);
 
   app.get('/auth/test2', users.test2);
-
+*/
 
 
   //TODO:  convert to REST style
@@ -93,7 +93,7 @@ module.exports = function (app) {
   app.get('/signup', users.signup)
   app.get('/logout', users.logout)
 
-
+/*
   //FB
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
@@ -151,7 +151,7 @@ module.exports = function (app) {
     passport.authenticate('linkedin', {
       failureRedirect: '/login'
     }), users.authCallback)
-
+*/
 
   // user routes
   //**************
@@ -205,6 +205,5 @@ module.exports = function (app) {
     
   //app.use('/', router);
 
-*/
 
 }
