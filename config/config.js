@@ -24,7 +24,7 @@ module.exports = {
     facebook: {
       clientID: "562426487166956",
       clientSecret: "ee0598bb3d299601f00e01588ab58da6",
-      callbackURL: "http://localhost:3000/auth/facebook/callback"
+      callbackURL: "http://liniya-sneezy.codio.io:3000/auth/facebook/callback"
     },
     twitter: {
       clientID: "CONSUMER_KEY",

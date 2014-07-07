@@ -26,7 +26,7 @@ var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
  * Expose routes
  */
 
-module.exports = function (app) {
+module.exports = function (app, passport) {
   
   //var router = express.Router(); 
 
@@ -60,8 +60,10 @@ module.exports = function (app) {
   //
   //
  
-/*
+
   app.post('/users/session', function(req, res, next) {
+      
+      console.log('local authentication')
 
     passport.authenticate('local', function(err, user, info) {
       if (err) { 
@@ -85,7 +87,7 @@ module.exports = function (app) {
   app.get('/users/session/logout', sessions.logOutSession);
 
   app.get('/auth/test2', users.test2);
-*/
+
 
 
   //TODO:  convert to REST style
@@ -93,7 +95,7 @@ module.exports = function (app) {
   app.get('/signup', users.signup)
   app.get('/logout', users.logout)
 
-/*
+
   //FB
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
@@ -151,7 +153,7 @@ module.exports = function (app) {
     passport.authenticate('linkedin', {
       failureRedirect: '/login'
     }), users.authCallback)
-*/
+
 
   // user routes
   //**************

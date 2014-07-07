@@ -8,8 +8,8 @@ var mongoose = require('mongoose')
   , utils = require('../../lib/utils')
 
 var login = function (req, res) {
-  console.log('login...', req.cookies);
-  console.log('login...', req.cookies['connect.sid']);
+  //console.log('login...', req.cookies);
+  //console.log('login...', req.cookies['connect.sid']);
   req.session.returnTo = null;
   if (req.session.returnTo) {
     res.redirect(req.session.returnTo)

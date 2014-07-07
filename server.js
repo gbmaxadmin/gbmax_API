@@ -36,14 +36,14 @@ fs.readdirSync(models_path).forEach(function (file) {
 })
 
 // bootstrap passport config
-//require('./config/passport')(passport, config)
+require('./config/passport')(passport, config)
 
 var app = express()
 // express settings
 require('./config/express')(app, config, passport)
 
 // Bootstrap routes
-require('./config/routes')(app)
+require('./config/routes')(app, passport)
 
 // Start the app by listening on <port>
 var port = process.env.PORT || 3000
